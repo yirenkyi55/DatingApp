@@ -1,0 +1,1 @@
+dotnet tool install  --global dotnet-ef : Adds the dotnet ef tool commands to the dotnetCLI
