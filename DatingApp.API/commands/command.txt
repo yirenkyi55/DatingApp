@@ -1,1 +1,9 @@
 dotnet tool install  --global dotnet-ef : Adds the dotnet ef tool commands to the dotnetCLI
+Marvin.Cache.Headers
+git rm appsettings.json --cached
+
+dotnet user-secrets set "Movies:ServiceApiKey" "12345"
+
+dotnet user-secrets init
+
+e5cdb3c6-e1c2-4c11-a50d-c46f9d86f253
