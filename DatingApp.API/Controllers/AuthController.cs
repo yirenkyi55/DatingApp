@@ -61,6 +61,7 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
         {
+
             if (userForLoginDto == null) return BadRequest(new { message = "Invalid request body" });
 
             if (!ModelState.IsValid)
