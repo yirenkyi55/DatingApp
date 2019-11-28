@@ -15,7 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): import('rxjs').Observable<import('@angular/common/http').HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((httpError: HttpErrorResponse) => {
-        // Handle 401 unauthorize error
+        // Handle 401 un-authorize error
         if (httpError.status === 401) {
           return throwError(httpError.statusText);
         }
@@ -25,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           return throwError(httpError.error.message);
         }
 
-        // Handle unprocessable entity error
+        // Handle un-processable entity error
         if (httpError.status === 422) {
           const serverError = httpError.error;
           let modelStateError = '';
