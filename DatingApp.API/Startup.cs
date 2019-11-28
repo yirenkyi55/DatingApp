@@ -4,7 +4,6 @@ using DatingApp.API.Data;
 using DatingApp.API.Data.Abstract;
 using DatingApp.API.Data.Concrete;
 using DatingApp.API.Helpers;
-using DatingApp.API.mappings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +30,9 @@ namespace DatingApp.API
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(InternalServerErrorExceptionFilter));
+            }).AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
             //Add connection string to the database.
@@ -67,7 +69,7 @@ namespace DatingApp.API
 
             //Inject repository services
             services.AddScoped<IAuthRepository, AuthRepository>();
-
+            services.AddScoped<IUserRepository, UserRepository>();
 
         }
 

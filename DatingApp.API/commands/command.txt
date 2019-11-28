@@ -6,4 +6,12 @@ dotnet user-secrets set "Movies:ServiceApiKey" "12345"
 
 dotnet user-secrets init
 
-e5cdb3c6-e1c2-4c11-a50d-c46f9d86f253
+dotnet ef migrations remove
+
+dotnet ef migrations add nameOfMigration
+
+dotnet ef database update
+
+dotnet ef database drop
+
+dotnet watch run: for running the application
