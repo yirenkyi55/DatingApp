@@ -16,6 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((httpError: HttpErrorResponse) => {
         // Handle 401 un-authorize error
+        console.log(httpError.status);
         if (httpError.status === 401) {
           return throwError(httpError.statusText);
         }
@@ -45,6 +46,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           const serverError = httpError.error;
           return throwError(serverError.message);
         }
+
+        return throwError(httpError.statusText);
       })
     );
   }
