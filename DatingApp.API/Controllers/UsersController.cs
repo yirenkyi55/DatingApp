@@ -1,20 +1,17 @@
 
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using DatingApp.API.Data;
 using DatingApp.API.Data.Abstract;
 using DatingApp.API.Dtos;
-using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -44,6 +41,31 @@ namespace DatingApp.API.Controllers
             var userToReturn = _mapper.Map<UserForDetailedDto>(user);
 
             return Ok(userToReturn);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody]UserForUpdateDto userForUpdate)
+        {
+            //Check if the id matches with the id in the token
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            //Save changes to the database
+            var userFromRepo = await _userRepository.GetUser(id);
+
+            if (userFromRepo == null) return NotFound(new { message = "Member not found" });
+
+            _mapper.Map(userForUpdate, userFromRepo);
+
+            //Save changes to the database
+            if (!await _userRepository.SaveAllChanges())
+            {
+                throw new System.Exception("Updating record failed on save");
+            }
+
+            return NoContent();
         }
     }
 }
